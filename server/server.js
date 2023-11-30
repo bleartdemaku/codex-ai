@@ -1,29 +1,29 @@
-import express from 'express'
-import * as dotenv from 'dotenv'
-import cors from 'cors'
-import { OpenAI } from 'openai'
+import express from "express";
+import * as dotenv from "dotenv";
+import cors from "cors";
+import OpenAI from "openai";
 
-dotenv.config()
+dotenv.config();
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const app = express()
-app.use(cors())
-app.use(express.json())
+const app = express();
+app.use(cors());
+app.use(express.json());
 
-app.get('/', async (req, res) => {
+app.get("/", async (req, res) => {
   res.status(200).send({
-    message: 'Hello from CodeX!'
-  })
-})
+    message: "Hello Codex!",
+  });
+});
 
-app.post('/', async (req, res) => {
+app.post("/", async (req, res) => {
   try {
     const prompt = req.body.prompt;
 
-    const response = await openai.createCompletion({
+    const response = await openai.completions.create({
       model: "text-davinci-003",
       prompt: `${prompt}`,
       temperature: 0, // Higher values means the model will take more risks.
@@ -34,13 +34,14 @@ app.post('/', async (req, res) => {
     });
 
     res.status(200).send({
-      bot: response.data.choices[0].text
+      bot: response.data.choices[0].text,
     });
-
   } catch (error) {
-    console.error(error)
-    res.status(500).send(error || 'Something went wrong');
+    console.error(error);
+    res.status(500).send(error || "Something went wrong");
   }
-})
+});
 
-app.listen(5000, () => console.log('AI server started on http://localhost:5000'))
+app.listen(5000, () =>
+  console.log("AI server started on http://localhost:5000")
+);
