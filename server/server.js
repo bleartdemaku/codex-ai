@@ -15,7 +15,7 @@ app.use(express.json());
 
 app.get("/", async (req, res) => {
   res.status(200).send({
-    message: "Hello Codex!",
+    message: "Hello from CodeX!",
   });
 });
 
@@ -23,7 +23,7 @@ app.post("/", async (req, res) => {
   try {
     const prompt = req.body.prompt;
 
-    const response = await openai.completions.create({
+    const response = await openai.chat.completions.create({
       model: "text-davinci-003",
       prompt: `${prompt}`,
       temperature: 0, // Higher values means the model will take more risks.
